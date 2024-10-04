@@ -60,9 +60,7 @@ struct duckdb_extension_access {
 };
 */
 
-type TaskState struct {
-	c C.duckdb_task_state
-}
+type TaskState unsafe.Pointer
 
 type Date struct {
 	c C.duckdb_date
