@@ -21,7 +21,7 @@ type API struct {
 
 func (api *API) Database() Database {
 	db := C._get_database(api.access.get_database, api.info)
-	return Database{c: *db}
+	return Database{unsafe.Pointer(db)}
 }
 
 func (api *API) SetError(msg string) {
