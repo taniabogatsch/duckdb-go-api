@@ -1,7 +1,7 @@
 package duckdb
 
 /*
-#include <go_duckdb.h>
+#include <duckdb.h>
 */
 import "C"
 

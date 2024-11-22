@@ -1,8 +1,9 @@
 package duckdb
 
 /*
+#cgo CFLAGS: -DDUCKDB_API_EXCLUDE_FUNCTIONS=0 -DDUCKDB_EXTENSION_API_VERSION_DEV=1
 #include <string.h>
-#include <duckdb_extension.h>
+#include <duckdb_go_extension.h>
 #include <magic.h>
 */
 import "C"

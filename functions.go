@@ -1,8 +1,8 @@
 package duckdb
 
 /*
-#include <go_duckdb.h>
-#include <duckdb_extension.h>
+#include <duckdb.h>
+#include <duckdb_go_extension.h>
 */
 import "C"
 import "unsafe"
