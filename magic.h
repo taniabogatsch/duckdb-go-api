@@ -1,4 +1,4 @@
-extern duckdb_ext_api_v0 *duckdb_ext_api;
+extern duckdb_ext_api_v1 *duckdb_ext_api;
 
 typedef struct duckdb_extension_access _duckdb_extension_access;
 typedef void (*set_error)(duckdb_extension_info info, const char *error);

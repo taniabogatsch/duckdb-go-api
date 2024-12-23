@@ -1,8 +1,9 @@
 package duckdb
 
 /*
-#cgo CFLAGS: -DDUCKDB_API_EXCLUDE_FUNCTIONS=0 -DDUCKDB_EXTENSION_API_VERSION_DEV=1
+#cgo CFLAGS: -DDUCKDB_API_EXCLUDE_FUNCTIONS=0
 #include <string.h>
+#include <stdlib.h>
 #include <duckdb_go_extension.h>
 #include <magic.h>
 */
@@ -11,7 +12,7 @@ import (
 	"unsafe"
 )
 
-const apiSize = unsafe.Sizeof([1]C.duckdb_ext_api_v0{})
+const apiSize = unsafe.Sizeof([1]C.duckdb_ext_api_v1{})
 
 var apiPtr unsafe.Pointer
 
@@ -27,19 +28,19 @@ func (api *API) Database() Database {
 
 func (api *API) SetError(msg string) {
 	err := C.CString(msg)
-	defer C.duckdb_free(unsafe.Pointer(err))
+	defer C.free(unsafe.Pointer(err))
 	C._set_error(api.access.set_error, api.info, err)
 }
 
 func Init(minVersion string, infoPtr unsafe.Pointer, accessPtr unsafe.Pointer) (API, error) {
 	version := C.CString(minVersion)
-	defer C.duckdb_free(unsafe.Pointer(version))
+	defer C.free(unsafe.Pointer(version))
 
 	info := (C.duckdb_extension_info)(infoPtr)
 	access := (*C._duckdb_extension_access)(accessPtr)
 	api := API{info: info, access: access}
 
-	ptr := (*C.duckdb_ext_api_v0)(C._get_api(access.get_api, info, version))
+	ptr := (*C.duckdb_ext_api_v1)(C._get_api(access.get_api, info, version))
 	if ptr == nil {
 		api.SetError(getAPIError.Error())
 		return api, getAPIError
@@ -47,6 +48,6 @@ func Init(minVersion string, infoPtr unsafe.Pointer, accessPtr unsafe.Pointer) (
 
 	apiPtr = unsafe.Pointer(C.malloc(C.size_t(apiSize)))
 	C.memcpy(apiPtr, unsafe.Pointer(ptr), C.size_t(apiSize))
-	C.duckdb_ext_api = (*C.duckdb_ext_api_v0)(apiPtr)
+	C.duckdb_ext_api = (*C.duckdb_ext_api_v1)(apiPtr)
 	return api, nil
 }
